@@ -1,15 +1,26 @@
 #pragma once
 #define POSTIVE 1
 #define REVERSE 2
+#define DESC 1
+#define ASC 2
 #include<iostream>
 using namespace std;
 typedef int PrintStyle;
-
+typedef int SortStype;
+/**************************/
+/**************************/
+/**************************/
 template<class ElemType>
 class Node
 {
 private:
 	ElemType elem;
+protected:
+	bool operator <(const ElemType comparedElem)
+	{
+		 
+
+	}
 public:
 	template<class ElemType>
 	using PtrInst = Node<ElemType>*;
@@ -22,13 +33,15 @@ public:
 	void setElem(const ElemType constElem) { elem = constElem; }
 	ElemType getElem() { return elem; }
 };
+
+/***************************/
 template<class ElemType>
 using PtrInst = Node<ElemType>*;
 template<class ElemType>
 using PtrNode = Node<ElemType>*;
-
-
-
+/***************************/
+/***************************/
+/***************************/
 template<class ElemType>
 class MyList
 {
@@ -47,15 +60,36 @@ public:
 		ptrTail = ptrHeadNode;
 	}
 	int getSize() { return size; }
-
 	void push_back(const ElemType newElem);
 	void push_front(const ElemType newElem);
 	ElemType pop_back();
 	ElemType pop_front();
-
 	void print_whole_list(const PrintStyle style);
+	void bubble_sort(MyList<ElemType>& list, SortStype stype);
 };
+/***************************/
+template<class ElemType>
+void swapNode(PtrNode<ElemType> &frontNode, PtrNode<ElemType> &backNode)
+{
+	PtrInst<ElemType> ptrFrontNodeFront, ptrFrontNodeNext, ptrBackNodeFront, ptrBackNodeNext;
+	ptrFrontNodeFront = frontNode->ptrFront;
+	ptrFrontNodeNext = frontNode->ptrNext;
+	ptrBackNodeFront = backNode->ptrFront;
+	ptrBackNodeNext = backNode->ptrNext;
 
+	ptrFrontNodeFront->ptrNext = backNode;
+	backNode->ptrFront = ptrFrontNodeFront;
+	backNode->ptrNext = ptrFrontNodeNext;
+	ptrFrontNodeNext->ptrFront = backNode;
+
+	ptrBackNodeFront->ptrNext = frontNode;
+	frontNode->ptrFront = ptrBackNodeFront;
+	frontNode->ptrNext = ptrBackNodeNext;
+	ptrBackNodeNext->ptrFront = frontNode;
+}
+/***************************/
+/***************************/
+/***************************/
 template<class ElemType>
 void MyList<ElemType>::push_back(const ElemType newElem)
 {
@@ -95,7 +129,6 @@ void MyList<ElemType>::push_front(const ElemType newElem)
 	}
 	size++;
 }
-
 template<class ElemType>
 ElemType MyList<ElemType>::pop_back()
 {
@@ -137,7 +170,9 @@ ElemType MyList<ElemType>::pop_front()
 		return ElemType();
 	}
 }
-
+/***************************/
+/***************************/
+/***************************/
 template<class ElemType>
 void MyList<ElemType>::print_whole_list(const PrintStyle style)
 {
@@ -177,3 +212,6 @@ void MyList<ElemType>::print_whole_list(const PrintStyle style)
 		}
 	}
 }
+/***************************/
+/***************************/
+/***************************/
