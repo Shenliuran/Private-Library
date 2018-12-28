@@ -1,61 +1,179 @@
 #pragma once
+#define POSTIVE 1
+#define REVERSE 2
 #include<iostream>
 using namespace std;
+typedef int PrintStyle;
 
-template<class T>
+template<class ElemType>
 class Node
 {
 private:
-	template<class T>
-	using Ptr = Node<T>*;
-	template<class T>
-	using PtrToHead = Node<T>*;
-	template<class T>
-	using PtrToTail = Node<T>*;
-	T element;
-	Ptr<T> front_ptr, next_ptr;
+	ElemType elem;
 public:
-	Node() { front_ptr = next_ptr = nullptr; }
+	template<class ElemType>
+	using PtrInst = Node<ElemType>*;
+	template<class ElemType>
+	using PtrNode = Node<ElemType>*;
 
-	void set_front_ptr(const Ptr<T> const_ptr) { front_ptr = const_ptr; }
-	void set_next_ptr(const Ptr<T>  const_ptr) { next_ptr = const_ptr; }
-	void set_element(const T const_element) { element = const_element; }
+	PtrInst<ElemType> ptrFront, ptrNext;
+	Node(const ElemType constElem) { elem = constElem; ptrFront = ptrNext = nullptr; }
 
-	Ptr<T> get_front_ptr() { return front_ptr; }
-	Ptr<T> get_next_ptr() { return next_ptr; }
-	Ptr<T> get_current_ptr() { return this; }
-	T get_element() { return element; }
+	void setElem(const ElemType constElem) { elem = constElem; }
+	ElemType getElem() { return elem; }
 };
-template<class T>
-using Ptr = Node<T>*;
-template<class T>
-using PtrToHead = Node<T>*;
-template<class T>
-using PtrToTail = Node<T>*;
+template<class ElemType>
+using PtrInst = Node<ElemType>*;
+template<class ElemType>
+using PtrNode = Node<ElemType>*;
 
-template<class T>
+
+
+template<class ElemType>
 class MyList
 {
 private:
-	PtrToHead<T> head_ptr;
-	PtrToTail<T> tail_ptr;
 	int size;
+protected:
+	PtrNode<ElemType> ptrHeadNode;
+	PtrInst <ElemType> ptrTail;
 public:
-	MyList() { size = 0; head_ptr = tail_ptr = nullptr; }
+	MyList()
+	{
+		ptrHeadNode = new Node<ElemType>(ElemType());
+		ptrHeadNode->ptrFront = ptrHeadNode;
+		ptrHeadNode->ptrNext = ptrHeadNode;
+		size = 0;
+		ptrTail = ptrHeadNode;
+	}
+	int getSize() { return size; }
 
-	PtrToHead<T> get_head_ptr() { return head_ptr; }
-	PtrToTail<T> get_tail_ptr() { return tail_ptr; }
-	int get_size() { return size; }
+	void push_back(const ElemType newElem);
+	void push_front(const ElemType newElem);
+	ElemType pop_back();
+	ElemType pop_front();
 
-	Node<T> pop_front();
-	Node<T> pop_back();
-	void push_front(const Node<T> new_node);
-	void push_back(const Node<T> new_node);
-
-	void bubble_sort();
-	void bubble_sort(Ptr<T> begin_ptr, Ptr<T> end_ptr);
-	void insert_sort();
-	void insert_sort(Ptr<T> begin_ptr, Ptr<T> end_ptr);
-	void qucik_sort();
-	void qucik_sort(Ptr<T> begin_ptr, Ptr<T> end_ptr);
+	void print_whole_list(const PrintStyle style);
 };
+
+template<class ElemType>
+void MyList<ElemType>::push_back(const ElemType newElem)
+{
+	PtrNode<ElemType> ptrNewNode = new Node<ElemType>(newElem);
+	if (size == 0)
+	{
+		ptrHeadNode->ptrNext = ptrNewNode;
+		ptrNewNode->ptrFront = ptrHeadNode;
+		ptrTail = ptrNewNode;
+	}
+	else
+	{
+		ptrTail->ptrNext = ptrNewNode;
+		ptrNewNode->ptrFront = ptrTail;
+		ptrTail = ptrNewNode;
+	}
+	size++;
+}
+template<class ElemType>
+void MyList<ElemType>::push_front(const ElemType newElem)
+{
+	PtrNode<ElemType> ptrNewNode = new Node<ElemType>(newElem);
+	if (size == 0)
+	{
+		ptrHeadNode->ptrNext = ptrNewNode;
+		ptrNewNode->ptrFront = ptrHeadNode;
+		ptrTail = ptrNewNode;
+	}
+	else
+	{
+		PtrInst<ElemType> ptrOriginalFirstNode;
+		ptrOriginalFirstNode = ptrHeadNode->ptrNext;
+		ptrNewNode->ptrNext = ptrHeadNode->ptrNext;
+		ptrHeadNode->ptrNext = ptrNewNode;
+		ptrOriginalFirstNode->ptrFront = ptrNewNode;
+		ptrNewNode->ptrFront = ptrHeadNode;
+	}
+	size++;
+}
+
+template<class ElemType>
+ElemType MyList<ElemType>::pop_back()
+{
+	PtrInst<ElemType> ptrDelete;
+	ElemType record;
+	if (size != 0)
+	{
+		record = ptrTail->getElem();
+		ptrDelete = ptrTail;
+		ptrTail = ptrDelete->ptrFront;
+		delete ptrDelete;
+		ptrTail->ptrNext = nullptr;
+		size--;
+		return record;
+	}
+	else
+	{
+		cout << "can not be functioned, because this is a empty list!!" << endl;
+		return ElemType();
+	}
+}
+template<class ElemType>
+ElemType MyList<ElemType>::pop_front()
+{
+	if (size != 0)
+	{
+		PtrInst<ElemType> ptrDelete;
+		ElemType record;
+		ptrDelete = ptrHeadNode->ptrNext;
+		record = ptrDelete->getElem();
+		ptrHeadNode->ptrNext = ptrDelete->ptrNext;
+		delete ptrDelete;
+		size--;
+		return record;
+	}
+	else
+	{
+		cout << "can not be functioned, because this is a empty list!!" << endl;
+		return ElemType();
+	}
+}
+
+template<class ElemType>
+void MyList<ElemType>::print_whole_list(const PrintStyle style)
+{
+	PtrInst<ElemType> ptrFlag;
+	if (style == POSTIVE)
+	{
+		ptrFlag = ptrHeadNode->ptrNext;
+		if (ptrFlag == nullptr)
+			cout << "can not ba functioned, because this is an empty list!!" << endl;
+		else
+		{
+			while (ptrFlag)
+			{
+				cout << ptrFlag->getElem();
+				if (ptrFlag == nullptr)
+					cout << endl;
+				ptrFlag = ptrFlag->ptrNext;
+			}
+			cout << endl;
+		}
+	}
+	else
+	{
+		ptrFlag = ptrTail;
+		if (ptrFlag == nullptr)
+			cout << "can not ba functioned, because this is an empty list!!" << endl;
+		else
+		{
+			while (ptrFlag != ptrHeadNode)
+			{
+				cout << ptrFlag->getElem();
+				if (ptrFlag == ptrHeadNode)
+					cout << endl;
+				ptrFlag = ptrFlag->ptrFront;
+			}
+			cout << endl;
+		}
+	}
+}

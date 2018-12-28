@@ -3,12 +3,10 @@
 int main(void)
 {
 	MyList<int> list;
-	/*Node<int> node1;
-	node1.set_element(1);
-	list.push_back(node1);
-	Node<int> node2;
-	node2.set_element(2);
-	list.push_back(node2);
-	cout << list.pop_back() << endl;*/
+	list.push_back(1);
+	list.push_back(2);
+	list.print_whole_list(POSTIVE);
+	list.print_whole_list(REVERSE);
 
+	return 0;
 }
