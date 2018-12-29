@@ -146,8 +146,9 @@
     <ClInclude Include="mylist.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="algorithm.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="algorithm.h" />
+    <ClCompile Include="mylist.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
