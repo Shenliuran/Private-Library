@@ -3,7 +3,7 @@
 template<class ElemType>
 void MyList<ElemType>::bubble_sort(const SortStype stype)
 {
-	PtrInst<ElemType> ptrNow, ptrCompared;
+	Ptr<ElemType> ptrNow, ptrCompared;
 	ptrNow = ptrHeadNode->ptrNext;
 	int nowNodeLocation = 1;
 	while (ptrNow)
@@ -11,7 +11,7 @@ void MyList<ElemType>::bubble_sort(const SortStype stype)
 		ptrCompared = ptrNow->ptrNext;
 		while (ptrCompared)
 		{
-			PtrInst<ElemType> ptrComparedNext = ptrCompared->ptrNext;
+			Ptr<ElemType> ptrComparedNext = ptrCompared->ptrNext;
 			if (stype == ASC && ptrNow->getElem() > ptrCompared->getElem())
 				swapNode(ptrNow, ptrCompared);
 			else if (stype == DESC && ptrNow->getElem() < ptrCompared->getElem())
@@ -28,4 +28,8 @@ void MyList<ElemType>::bubble_sort(const SortStype stype)
 template<class ElemType>
 void MyList<ElemType>::qucik_sort(const SortStype stype)
 {
+	
 }
+/******************************/
+/******************************/
+/******************************/

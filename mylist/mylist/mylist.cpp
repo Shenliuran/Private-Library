@@ -1,8 +1,8 @@
 #include "mylist.h"
 template<class ElemType>
-void MyList<ElemType>::swapNode(PtrNode<ElemType> &frontNode, PtrNode<ElemType> &backNode)
+void MyList<ElemType>::swapNode(PTR &frontNode, PTR &backNode)
 {
-	PtrInst<ElemType> ptrFrontNodeFront, ptrFrontNodeNext, ptrBackNodeFront, ptrBackNodeNext;
+	PTR ptrFrontNodeFront, ptrFrontNodeNext, ptrBackNodeFront, ptrBackNodeNext;
 	if (frontNode->ptrNext == backNode)
 	{
 		ptrFrontNodeFront = frontNode->ptrFront;
@@ -35,7 +35,7 @@ void MyList<ElemType>::swapNode(PtrNode<ElemType> &frontNode, PtrNode<ElemType> 
 	}
 	else if (frontNode->ptrNext->ptrNext == backNode)
 	{
-		PtrInst<ElemType> ptrBetween;
+		PTR ptrBetween;
 		ptrBetween = frontNode->ptrNext;
 		ptrFrontNodeFront = frontNode->ptrFront;
 		ptrBackNodeNext = backNode->ptrNext;
@@ -75,10 +75,10 @@ void MyList<ElemType>::swapNode(PtrNode<ElemType> &frontNode, PtrNode<ElemType> 
 template<class ElemType>
 void MyList<ElemType>::push_back(const ElemType newElem)
 {
-	PtrNode<ElemType> ptrNewNode = new Node<ElemType>(newElem);
+	PTR ptrNewNode = new ListNode<ElemType>(newElem);
 	if (size == 0)
 	{
-		ptrHeadNode->ptrNext = ptrNewNode;
+		PTRFIRST = ptrNewNode;
 		ptrNewNode->ptrFront = ptrHeadNode;
 		ptrTail = ptrNewNode;
 	}
@@ -93,19 +93,19 @@ void MyList<ElemType>::push_back(const ElemType newElem)
 template<class ElemType>
 void MyList<ElemType>::push_front(const ElemType newElem)
 {
-	PtrNode<ElemType> ptrNewNode = new Node<ElemType>(newElem);
+	PTR ptrNewNode = new ListNode<ElemType>(newElem);
 	if (size == 0)
 	{
-		ptrHeadNode->ptrNext = ptrNewNode;
+		PTRFIRST = ptrNewNode;
 		ptrNewNode->ptrFront = ptrHeadNode;
 		ptrTail = ptrNewNode;
 	}
 	else
 	{
-		PtrInst<ElemType> ptrOriginalFirstNode;
-		ptrOriginalFirstNode = ptrHeadNode->ptrNext;
-		ptrNewNode->ptrNext = ptrHeadNode->ptrNext;
-		ptrHeadNode->ptrNext = ptrNewNode;
+		PTR ptrOriginalFirstNode;
+		ptrOriginalFirstNode = PTRFIRST;
+		ptrNewNode->ptrNext = PTRFIRST;
+		PTRFIRST = ptrNewNode;
 		ptrOriginalFirstNode->ptrFront = ptrNewNode;
 		ptrNewNode->ptrFront = ptrHeadNode;
 	}
@@ -114,7 +114,7 @@ void MyList<ElemType>::push_front(const ElemType newElem)
 template<class ElemType>
 ElemType MyList<ElemType>::pop_back()
 {
-	PtrInst<ElemType> ptrDelete;
+	PTR ptrDelete;
 	ElemType record;
 	if (size != 0)
 	{
@@ -137,11 +137,11 @@ ElemType MyList<ElemType>::pop_front()
 {
 	if (size != 0)
 	{
-		PtrInst<ElemType> ptrDelete;
+		PTR ptrDelete;
 		ElemType record;
-		ptrDelete = ptrHeadNode->ptrNext;
+		ptrDelete = PTRFIRST;
 		record = ptrDelete->getElem();
-		ptrHeadNode->ptrNext = ptrDelete->ptrNext;
+		PTRFIRST = ptrDelete->ptrNext;
 		delete ptrDelete;
 		size--;
 		return record;
@@ -156,12 +156,35 @@ ElemType MyList<ElemType>::pop_front()
 /***************************/
 /***************************/
 template<class ElemType>
+ElemType MyList<ElemType>::operator [](const int index)
+{
+	if (index > size || index < 1)
+	{
+		cout << "crossing!!" << endl;
+		return ElemType();
+	}
+	else
+	{
+		int i = 1;
+		PTR ptrNow = PTRFIRST;
+		while (i != index)
+		{
+			ptrNow = ptrNow->ptrNext;
+			i++;
+		}
+		return ptrNow->getElem();
+	}
+}
+/***************************/
+/***************************/
+/***************************/
+template<class ElemType>
 void MyList<ElemType>::print_whole_list(const PrintStyle style)
 {
-	PtrInst<ElemType> ptrFlag;
+	PTR ptrFlag;
 	if (style == POSTIVE)
 	{
-		ptrFlag = ptrHeadNode->ptrNext;
+		ptrFlag = PTRFIRST;
 		if (ptrFlag == nullptr)
 			cout << "can not ba functioned, because this is an empty list!!" << endl;
 		else
@@ -197,3 +220,18 @@ void MyList<ElemType>::print_whole_list(const PrintStyle style)
 /***************************/
 /***************************/
 /***************************/
+template<class ElemType>
+void list_copy(MyList<ElemType> originalList, MyList<ElemType> &targetList)
+{
+	for (int i = 1; i <= originalList.getSize(); i++)
+	{
+		targetList.push_back(originalList[i]);
+	}
+}
+/***************************/
+/***************************/
+/***************************/
+template<class ElemType>
+void MyList<ElemType>::deleteNodeByIndex(const int deletedindex);
+template<class ElemType>
+void MyList<ElemType>::deleteNodeByElem(const ElemType deletedElem);
