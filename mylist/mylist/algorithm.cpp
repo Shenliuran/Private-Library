@@ -23,6 +23,7 @@ void MyList<ElemType>::bubble_sort(const SortStype stype)
 		ptrNow = ptrNow->ptrNext;
 		nowNodeLocation++;
 	}
+	TAIL_POINTER_REST;
 }
 
 template<class ElemType>

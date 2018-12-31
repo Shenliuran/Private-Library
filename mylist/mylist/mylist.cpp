@@ -232,6 +232,142 @@ void list_copy(MyList<ElemType> originalList, MyList<ElemType> &targetList)
 /***************************/
 /***************************/
 template<class ElemType>
-void MyList<ElemType>::deleteNodeByIndex(const int deletedindex);
+void MyList<ElemType>::deleteNode(PTR &nowNode)
+{
+	if (nowNode->ptrNext == nullptr)
+	{
+		ptrTail = nowNode->ptrFront;
+		delete nowNode;
+		ptrTail->ptrNext = nullptr;
+	}
+	else
+	{
+		PTR ptrNowFront = nowNode->ptrFront;
+		PTR ptrNowNext = nowNode->ptrNext;
+		ptrNowFront->ptrNext = ptrNowNext;
+		ptrNowNext->ptrFront = ptrNowFront;
+		delete nowNode;
+	}
+	size--;
+}
 template<class ElemType>
-void MyList<ElemType>::deleteNodeByElem(const ElemType deletedElem);
+void MyList<ElemType>::deleteNodeByIndex(const int deletedIndex)
+{
+	if (deletedIndex < 1 || deletedIndex > size)
+		cout << "crossing!!" << endl;
+	else
+	{
+		PTR ptrNow = PTRFIRST;
+		int i = 1;
+		while (i != deletedIndex)
+		{
+			ptrNow = ptrNow->ptrNext;
+			i++;
+		}
+		deleteNode(ptrNow);
+	}
+}
+template<class ElemType>
+void MyList<ElemType>::deleteNodeByElem(const ElemType deletedElem)
+{
+	PTR ptrNow = PTRFIRST;
+	int record = 0;
+	while (ptrNow != nullptr)
+	{
+		PTR ptrNowNext = ptrNow->ptrNext;
+		if (deletedElem == ptrNow->getElem())
+		{
+			deleteNode(ptrNow);
+			record++;
+		}
+		ptrNow = ptrNowNext;
+	}
+	if (record == 0)
+		cout << "there is no such element!!" << endl;
+	else
+	{
+		cout << "there is " << record << " elements you have deleted yet!!" << endl;
+	}
+}
+/***************************/
+/***************************/
+/***************************/
+template<class ElemType>
+void MyList<ElemType>::insertNode(PTR &newNodeFront, PTR &newNode)
+{
+	if (newNodeFront->ptrNext == nullptr)
+	{
+		newNodeFront->ptrNext = newNode;
+		newNode->ptrFront = newNodeFront;
+		ptrTail = newNode;
+	}
+	else
+	{
+		PTR newNodeNext = newNodeFront->ptrNext;
+		newNodeFront->ptrNext = newNode;
+		newNode->ptrFront = newNodeFront;
+		newNodeNext->ptrFront = newNode;
+		newNode->ptrNext = newNodeNext;
+	}
+	size++;
+
+}
+template<class ElemType>
+void MyList<ElemType>::insertNodeByIndex(const int index, const ElemType insertedElem)
+{
+	int recordSize = size;
+	if (index < 1 || index > recordSize + 1)
+	{
+		cout << "crossing!!" << endl;
+	}
+	else
+	{
+		PTR newNode = new ListNode<ElemType>(insertedElem);
+		if (index == 1)
+			insertNode(ptrHeadNode, newNode);
+		else
+		{
+			PTR ptrNow = ptrHeadNode->ptrNext;
+			int i = 2;
+			while (i != index)
+			{
+				ptrNow = ptrNow->ptrNext;
+				i++;
+			}
+			insertNode(ptrNow, newNode);
+		}
+	}
+}
+/***************************/
+/***************************/
+/***************************/
+template<class ElemType>
+void MyList<ElemType>::reverseList()
+{
+	PTR ptrNow = PTRFIRST;
+	PTR ptrOrigianlNext;
+	PTR ptrMove;
+	PTR ptrTailOriginalFront = ptrTail->ptrFront;
+	ptrHeadNode->ptrNext = ptrTail;
+	ptrOrigianlNext = ptrNow->ptrNext;
+	ptrMove = ptrOrigianlNext->ptrNext;
+	ptrTail->ptrFront = ptrHeadNode;
+	ptrTail->ptrNext = ptrTailOriginalFront;
+	ptrTail = ptrNow;
+	ptrNow->ptrFront = ptrOrigianlNext;
+	ptrOrigianlNext->ptrNext = ptrNow;
+	ptrNow->ptrNext = nullptr;
+	ptrNow = ptrOrigianlNext;
+	ptrOrigianlNext = ptrMove;
+	ptrOrigianlNext->ptrFront = ptrMove;
+	ptrMove = ptrMove->ptrNext;
+	while (ptrOrigianlNext != PTRFIRST)
+	{
+		ptrNow->ptrFront = ptrOrigianlNext;
+		ptrOrigianlNext->ptrNext = ptrNow;
+		ptrOrigianlNext->ptrFront = ptrMove;
+		ptrNow = ptrOrigianlNext;
+		ptrOrigianlNext = ptrMove;
+		ptrMove = ptrMove->ptrNext;
+	}
+}

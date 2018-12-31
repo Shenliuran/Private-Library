@@ -37,6 +37,8 @@ protected:
 	PTR ptrHeadNode;
 	PTR ptrTail;
 	void swapNode(PTR &frontNode, PTR &backNode);
+	void deleteNode(PTR &nowNode);
+	void insertNode(PTR &newNodeFront, PTR&newNode);
 public:
 	MyList()
 	{
@@ -55,7 +57,7 @@ public:
 	void print_whole_list(const PrintStyle style = POSTIVE);
 	void bubble_sort(const SortStype stype = ASC);
 	void qucik_sort(const SortStype stype = ASC);
-	void deleteNodeByIndex(const int deletedindex);
+	void deleteNodeByIndex(const int deletedIndex);
 	void deleteNodeByElem(const ElemType deletedElem);
 	void insertNodeByIndex(const int index, const ElemType insertedElem);
 	void reverseList();
