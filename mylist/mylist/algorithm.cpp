@@ -12,9 +12,9 @@ void MyList<ElemType>::bubble_sort(const SortStype stype)
 		while (ptrCompared)
 		{
 			Ptr<ElemType> ptrComparedNext = ptrCompared->ptrNext;
-			if (stype == ASC && ptrNow->getElem() > ptrCompared->getElem())
+			if (stype == ASC && ptrNow->elem > ptrCompared->elem)
 				swapNode(ptrNow, ptrCompared);
-			else if (stype == DESC && ptrNow->getElem() < ptrCompared->getElem())
+			else if (stype == DESC && ptrNow->elem < ptrCompared->elem)
 				swapNode(ptrNow, ptrCompared);
 			ptrCompared = ptrComparedNext;
 			SORT_POINTER_RESET;

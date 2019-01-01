@@ -11,16 +11,12 @@ typedef int SortStype;
 template<class ElemType>
 class ListNode
 {
-private:
-	ElemType elem;
-protected:
 public:
+	ElemType elem;
 	template<class ElemType>
 	using Ptr = ListNode<ElemType>*;
 	PTR ptrFront, ptrNext;
 	ListNode(const ElemType constElem) { elem = constElem; ptrFront = ptrNext = nullptr; }
-	void setElem(const ElemType constElem) { elem = constElem; }
-	ElemType getElem() { return elem; }
 };
 /***************************/
 template<class ElemType>
@@ -50,9 +46,13 @@ public:
 	}
 	int getSize() { return size; }
 	void push_back(const ElemType newElem);
+	void push_back(PTR ptrNewNode);
 	void push_front(const ElemType newElem);
+	void push_front(PTR ptrNewNode);
 	ElemType pop_back();
+	Ptr<ElemType> pop_back(PTR ptrReturn = nullptr);
 	ElemType pop_front();
+	Ptr<ElemType> pop_front(PTR ptrReturn = nullptr);
 	ElemType operator [](const int index);//start from index = 1
 	void print_whole_list(const PrintStyle style = POSTIVE);
 	void bubble_sort(const SortStype stype = ASC);

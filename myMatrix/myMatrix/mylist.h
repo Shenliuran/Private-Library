@@ -1,4 +1,97 @@
-#include "mylist.h"
+#pragma once
+#pragma once
+
+#define POSTIVE 1
+#define REVERSE 2
+#define DESC 1
+#define ASC 2
+#define PTR Ptr<ElemType>
+#define PTRFIRST ptrHeadNode->ptrNext
+#define SORT_POINTER_RESET	ptrNow = ptrHeadNode->ptrNext;\
+							int i = 1;\
+							while(i != nowNodeLocation)\
+							{ptrNow = ptrNow->ptrNext;i++;}
+#define TAIL_POINTER_REST	PTR ptrNewTail = PTRFIRST;\
+							while (ptrNewTail->ptrNext != nullptr)\
+							{ptrNewTail = ptrNewTail->ptrNext;}\
+							ptrTail = ptrNewTail
+#include<iostream>
+using namespace std;
+typedef int PrintStyle;
+typedef int SortStype;
+/**************************/
+/**************************/
+/**************************/
+template<class ElemType>
+class ListNode
+{
+private:
+	ElemType elem;
+protected:
+public:
+	template<class ElemType>
+	using Ptr = ListNode<ElemType>*;
+	PTR ptrFront, ptrNext;
+	ListNode(const ElemType constElem) { elem = constElem; ptrFront = ptrNext = nullptr; }
+	void setElem(const ElemType constElem) { elem = constElem; }
+	ElemType getElem() { return elem; }
+};
+/***************************/
+template<class ElemType>
+using Ptr = ListNode<ElemType>*;
+/***************************/
+/***************************/
+/***************************/
+template<class ElemType>
+class MyList
+{
+private:
+	int size;
+protected:
+	PTR ptrHeadNode;
+	PTR ptrTail;
+	void swapNode(PTR &frontNode, PTR &backNode);
+	void deleteNode(PTR &nowNode);
+	void insertNode(PTR &newNodeFront, PTR&newNode);
+public:
+	MyList()
+	{
+		ptrHeadNode = new ListNode<ElemType>(ElemType());
+		ptrHeadNode->ptrFront = ptrHeadNode;
+		ptrHeadNode->ptrNext = ptrHeadNode;
+		size = 0;
+		ptrTail = ptrHeadNode;
+	}
+	int getSize() { return size; }
+	void push_back(const ElemType newElem);
+	void push_front(const ElemType newElem);
+	ElemType pop_back();
+	ElemType pop_front();
+	ElemType operator [](const int index);//start from index = 1
+	void print_whole_list(const PrintStyle style = POSTIVE);
+	void bubble_sort(const SortStype stype = ASC);
+	void qucik_sort(const SortStype stype = ASC);
+	void deleteNodeByIndex(const int deletedIndex);
+	void deleteNodeByElem(const ElemType deletedElem);
+	void insertNodeByIndex(const int index, const ElemType insertedElem);
+	void reverseList();
+};
+/***************************/
+/***************************/
+/***************************/
+/***************************/
+/***************************/
+/***************************/
+/***************************/
+/***************************/
+/***************************/
+/***************************/
+/***************************/
+/***************************/
+/***************************/
+/***************************/
+/***************************/
+/***************************/
 template<class ElemType>
 void MyList<ElemType>::swapNode(PTR &frontNode, PTR &backNode)
 {
@@ -91,46 +184,9 @@ void MyList<ElemType>::push_back(const ElemType newElem)
 	size++;
 }
 template<class ElemType>
-void MyList<ElemType>::push_back(PTR ptrNewNode)
-{
-	if (size == 0)
-	{
-		PTRFIRST = ptrNewNode;
-		ptrNewNode->ptrFront = ptrHeadNode;
-		ptrTail = ptrNewNode;
-	}
-	else
-	{
-		ptrTail->ptrNext = ptrNewNode;
-		ptrNewNode->ptrFront = ptrTail;
-		ptrTail = ptrNewNode;
-	}
-	size++;
-}
-template<class ElemType>
 void MyList<ElemType>::push_front(const ElemType newElem)
 {
 	PTR ptrNewNode = new ListNode<ElemType>(newElem);
-	if (size == 0)
-	{
-		PTRFIRST = ptrNewNode;
-		ptrNewNode->ptrFront = ptrHeadNode;
-		ptrTail = ptrNewNode;
-	}
-	else
-	{
-		PTR ptrOriginalFirstNode;
-		ptrOriginalFirstNode = PTRFIRST;
-		ptrNewNode->ptrNext = PTRFIRST;
-		PTRFIRST = ptrNewNode;
-		ptrOriginalFirstNode->ptrFront = ptrNewNode;
-		ptrNewNode->ptrFront = ptrHeadNode;
-	}
-	size++;
-}
-template<class ElemType>
-void MyList<ElemType>::push_front(PTR ptrNewNode)
-{
 	if (size == 0)
 	{
 		PTRFIRST = ptrNewNode;
@@ -155,7 +211,7 @@ ElemType MyList<ElemType>::pop_back()
 	ElemType record;
 	if (size != 0)
 	{
-		record = ptrTail->elem;
+		record = ptrTail->getElem();
 		ptrDelete = ptrTail;
 		ptrTail = ptrDelete->ptrFront;
 		delete ptrDelete;
@@ -167,24 +223,6 @@ ElemType MyList<ElemType>::pop_back()
 	{
 		cout << "can not be functioned, because this is a empty list!!" << endl;
 		return ElemType();
-	}
-}
-template<class ElemType>
-Ptr<ElemType> MyList<ElemType>::pop_back(PTR ptrReturn)
-{
-	PTR ptrDelete;
-	if (size != 0)
-	{
-		ptrDelete = ptrTail;
-		ptrTail = ptrDelete->ptrFront;
-		ptrTail->ptrNext = nullptr;
-		size--;
-		return ptrDelete;
-	}
-	else
-	{
-		cout << "can not be functioned, because this is a empty list!!" << endl;
-		return nullptr;
 	}
 }
 template<class ElemType>
@@ -195,7 +233,7 @@ ElemType MyList<ElemType>::pop_front()
 		PTR ptrDelete;
 		ElemType record;
 		ptrDelete = PTRFIRST;
-		record = ptrDelete->elem;
+		record = ptrDelete->getElem();
 		PTRFIRST = ptrDelete->ptrNext;
 		delete ptrDelete;
 		size--;
@@ -205,23 +243,6 @@ ElemType MyList<ElemType>::pop_front()
 	{
 		cout << "can not be functioned, because this is a empty list!!" << endl;
 		return ElemType();
-	}
-}
-template<class ElemType>
-Ptr<ElemType> MyList<ElemType>::pop_front(PTR ptrReturn)
-{
-	if (size != 0)
-	{
-		PTR ptrDelete;
-		ptrDelete = PTRFIRST;
-		PTRFIRST = ptrDelete->ptrNext;
-		size--;
-		return ptrDelete;
-	}
-	else
-	{
-		cout << "can not be functioned, because this is a empty list!!" << endl;
-		return nullptr;
 	}
 }
 /***************************/
@@ -244,7 +265,7 @@ ElemType MyList<ElemType>::operator [](const int index)
 			ptrNow = ptrNow->ptrNext;
 			i++;
 		}
-		return ptrNow->elem;
+		return ptrNow->getElem();
 	}
 }
 /***************************/
@@ -263,7 +284,7 @@ void MyList<ElemType>::print_whole_list(const PrintStyle style)
 		{
 			while (ptrFlag)
 			{
-				cout << ptrFlag->elem;
+				cout << ptrFlag->getElem();
 				if (ptrFlag == nullptr)
 					cout << endl;
 				ptrFlag = ptrFlag->ptrNext;
@@ -280,7 +301,7 @@ void MyList<ElemType>::print_whole_list(const PrintStyle style)
 		{
 			while (ptrFlag != ptrHeadNode)
 			{
-				cout << ptrFlag->elem;
+				cout << ptrFlag->getElem();
 				if (ptrFlag == ptrHeadNode)
 					cout << endl;
 				ptrFlag = ptrFlag->ptrFront;
@@ -347,7 +368,7 @@ void MyList<ElemType>::deleteNodeByElem(const ElemType deletedElem)
 	while (ptrNow != nullptr)
 	{
 		PTR ptrNowNext = ptrNow->ptrNext;
-		if (deletedElem == ptrNow->elem)
+		if (deletedElem == ptrNow->getElem())
 		{
 			deleteNode(ptrNow);
 			record++;
@@ -443,3 +464,82 @@ void MyList<ElemType>::reverseList()
 		ptrMove = ptrMove->ptrNext;
 	}
 }
+#include "mylist.h"
+
+template<class ElemType>
+void MyList<ElemType>::bubble_sort(const SortStype stype)
+{
+	Ptr<ElemType> ptrNow, ptrCompared;
+	ptrNow = ptrHeadNode->ptrNext;
+	int nowNodeLocation = 1;
+	while (ptrNow)
+	{
+		ptrCompared = ptrNow->ptrNext;
+		while (ptrCompared)
+		{
+			Ptr<ElemType> ptrComparedNext = ptrCompared->ptrNext;
+			if (stype == ASC && ptrNow->getElem() > ptrCompared->getElem())
+				swapNode(ptrNow, ptrCompared);
+			else if (stype == DESC && ptrNow->getElem() < ptrCompared->getElem())
+				swapNode(ptrNow, ptrCompared);
+			ptrCompared = ptrComparedNext;
+			SORT_POINTER_RESET;
+		}
+		SORT_POINTER_RESET;
+		ptrNow = ptrNow->ptrNext;
+		nowNodeLocation++;
+	}
+	TAIL_POINTER_REST;
+}
+
+template<class ElemType>
+void MyList<ElemType>::qucik_sort(const SortStype stype)
+{
+
+}
+/******************************/
+/******************************/
+/******************************/
+/******************************/
+/******************************/
+/******************************/
+/******************************/
+/******************************/
+/******************************/
+/******************************/
+/******************************/
+/******************************/
+template<class ElemType>
+void MyList<ElemType>::bubble_sort(const SortStype stype)
+{
+	Ptr<ElemType> ptrNow, ptrCompared;
+	ptrNow = ptrHeadNode->ptrNext;
+	int nowNodeLocation = 1;
+	while (ptrNow)
+	{
+		ptrCompared = ptrNow->ptrNext;
+		while (ptrCompared)
+		{
+			Ptr<ElemType> ptrComparedNext = ptrCompared->ptrNext;
+			if (stype == ASC && ptrNow->getElem() > ptrCompared->getElem())
+				swapNode(ptrNow, ptrCompared);
+			else if (stype == DESC && ptrNow->getElem() < ptrCompared->getElem())
+				swapNode(ptrNow, ptrCompared);
+			ptrCompared = ptrComparedNext;
+			SORT_POINTER_RESET;
+		}
+		SORT_POINTER_RESET;
+		ptrNow = ptrNow->ptrNext;
+		nowNodeLocation++;
+	}
+	TAIL_POINTER_REST;
+}
+
+template<class ElemType>
+void MyList<ElemType>::qucik_sort(const SortStype stype)
+{
+
+}
+/******************************/
+/******************************/
+/******************************/
