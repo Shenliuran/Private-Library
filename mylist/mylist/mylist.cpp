@@ -72,6 +72,10 @@ void MyList<ElemType>::swapNode(PTR &frontNode, PTR &backNode)
 /***************************/
 /***************************/
 /***************************/
+
+/***************************/
+/***************************/
+/***************************/
 template<class ElemType>
 void MyList<ElemType>::push_back(const ElemType newElem)
 {

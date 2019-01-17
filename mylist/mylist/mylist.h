@@ -45,6 +45,10 @@ public:
 		ptrTail = ptrHeadNode;
 	}
 	int getSize() { return size; }
+	ElemType getFisrtElem() { return PTRFIRST->elem }
+	PTR getPtrFisrt() { return PTRFIRST; }
+	ElemType getEndElem() { return ptrTail; }
+	PTR getPtrEnd() { return ptrTail->elem; }
 	void push_back(const ElemType newElem);
 	void push_back(PTR ptrNewNode);
 	void push_front(const ElemType newElem);
