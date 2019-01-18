@@ -3,7 +3,7 @@
 #define POSTIVE 1
 #define REVERSE 2
 #define DESC 1
-#define ASC 2
+#define ASC_ 2
 #define PTR Ptr<ElemType>
 #define PTRFIRST ptrHeadNode->ptrNext
 #define SORT_POINTER_RESET	ptrNow = ptrHeadNode->ptrNext;\
@@ -30,6 +30,7 @@ public:
 	using Ptr = ListNode<ElemType>*;
 	PTR ptrFront, ptrNext;
 	ListNode(const ElemType constElem) { elem = constElem; ptrFront = ptrNext = nullptr; }
+	ListNode() :elem(ElemType(0)) {}
 };
 /***************************/
 template<class ElemType>
@@ -73,8 +74,8 @@ public:
 	Ptr<ElemType> pop_front(PTR ptrReturn = nullptr);
 	ElemType operator [](const int index);//start from index = 1
 	void print_whole_list(const PrintStyle style = POSTIVE);
-	void bubble_sort(const SortStype stype = ASC);
-	void qucik_sort(const SortStype stype = ASC);
+	void bubble_sort(const SortStype stype = ASC_);
+	void qucik_sort(const SortStype stype = ASC_);
 	void deleteNodeByIndex(const int deletedIndex);
 	void deleteNodeByElem(const ElemType deletedElem);
 	void insertNodeByIndex(const int index, const ElemType insertedElem);
@@ -557,7 +558,7 @@ void MyList<ElemType>::bubble_sort(const SortStype stype)
 		while (ptrCompared)
 		{
 			Ptr<ElemType> ptrComparedNext = ptrCompared->ptrNext;
-			if (stype == ASC && ptrNow->elem > ptrCompared->elem)
+			if (stype == ASC_ && ptrNow->elem > ptrCompared->elem)
 				swapNode(ptrNow, ptrCompared);
 			else if (stype == DESC && ptrNow->elem < ptrCompared->elem)
 				swapNode(ptrNow, ptrCompared);

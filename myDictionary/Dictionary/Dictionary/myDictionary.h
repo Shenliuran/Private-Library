@@ -1,23 +1,17 @@
 #pragma once
+#define LEMMA_NULL Lemma<KeyType, ValueType>()
 #include "myList.h"
 template<typename KeyType, typename ValueType>
 class Lemma
 {
 public:
-	KeyType mKey; ValueType mValue;
-	Lemma() :mKey(KeyType(0)), mValue(ValueType(0)) {}
+	KeyType mKey;
+	ValueType mValue;
+	Lemma() {}
 	Lemma(const KeyType &constKey, const ValueType &constValue) :mKey(constKey), mValue(constValue) {}
 	bool operator ==(const Lemma comparedLemma)
 	{
-		if (comparedLemma.mKey == mKey)
-			return true;
-		else
-			return false;
-	}
-	friend bool operator ==(const Lemma origianlLemma, const Lemma comparedLemma)
-	{
-		if (origianlLemma.mKey == comparedLemma.mKey
-			&& origianlLemma.mValue == comparedLemma.mValue)
+		if (comparedLemma.mKey == mKey && comparedLemma.mValue == mValue)
 			return true;
 		else
 			return false;
@@ -31,11 +25,13 @@ class Dictionary:private Lemma<KeyType, ValueType>
 private:
 	int mSum;
 	MyList<Lemma<KeyType, ValueType> > mLemmaList;
+	bool __KeyIsExist(const KeyType & matchKey);
 protected:
-	void _Entry(const KeyType &newKey, const ValueType &newValue);
-	Lemma<KeyType, ValueType> _Read(const KeyType &searchKey);
-	bool _IsEmpty() { if (mSum == 0) return true; else return false; }
+	void _Entry(const KeyType &newKey, const ValueType & newValue);
+	ValueType _Read(const KeyType & relativeKey);
 public:
 	Dictionary() :mSum(0) {}
 	ValueType Values(const KeyType &relativeKey);
+	void Entry(const KeyType & newKey, const ValueType & newValue);
+	bool IsEmpty() { if (mSum == 0) return true; else return false; }
 };
